@@ -1,0 +1,9 @@
+[package]
+name = "spirv-struct-layout"
+version = "0.1.0"
+authors = ["Tristam MacDonald <tristam@trist.am>"]
+edition = "2018"
+
+[dependencies]
+spirq = "0.0"
+color-backtrace = "0.3"
