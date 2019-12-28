@@ -1,4 +1,4 @@
-use spirv_struct_layout::{spriv_struct, CheckSpirvStruct};
+use spirv_struct_layout::{CheckSpirvStruct, SpirvLayout};
 
 // This is obnoxious. We need an include_words! macro to keep things aligned nicely
 fn cast_slice(v: &[u8]) -> &[u32] {
@@ -10,12 +10,14 @@ fn cast_slice(v: &[u8]) -> &[u32] {
     }
 }
 
-spriv_struct!(Uniforms {
+#[allow(dead_code)]
+#[derive(SpirvLayout)]
+struct Uniforms {
     model_view: [f32; 16],
     light_dir: [f32; 3],
-    _padding: f32, // comment this line, and the alignment will no longer match the spirv
+    // _padding: f32, // uncomment this line, and the alignment will match the spirv
     position: [f32; 4],
-});
+}
 
 fn main() {
     color_backtrace::install();

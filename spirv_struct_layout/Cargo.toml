@@ -1,0 +1,12 @@
+[package]
+name = "spirv-struct-layout"
+version = "0.1.0"
+authors = ["Tristam MacDonald <tristam@trist.am>"]
+edition = "2018"
+
+[dependencies]
+spirv-struct-layout-derive = { path = "../spirv_struct_layout_derive" }
+spirq = "0.0"
+
+[dev-dependencies]
+color-backtrace = "0.3"
