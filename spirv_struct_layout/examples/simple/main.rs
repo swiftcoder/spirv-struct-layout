@@ -20,11 +20,9 @@ struct Uniforms {
 }
 
 fn main() {
-    color_backtrace::install();
-
     let spirv = Vec::from(cast_slice(include_bytes!("simple.frag.spv")));
 
-    Uniforms::check("buf", spirv);
+    Uniforms::check_spirv_layout("buf", spirv);
 
     println!("I guess the struct is laid out correctly.");
 }

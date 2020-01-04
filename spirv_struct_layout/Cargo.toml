@@ -1,12 +1,15 @@
 [package]
 name = "spirv-struct-layout"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Tristam MacDonald <tristam@trist.am>"]
+license = "Apache-2.0"
+description = "Check that the layout of a rust struct matches the layout of a given type in SPIRV"
 edition = "2018"
 
-[dependencies]
-spirv-struct-layout-derive = { path = "../spirv_struct_layout_derive" }
-spirq = "0.0"
+repository = "https://github.com/swiftcoder/spirv-struct-layout"
+documentation = "https://docs.rs/spirv-struct-layout"
+readme = "../README.md"
 
-[dev-dependencies]
-color-backtrace = "0.3"
+[dependencies]
+spirv-struct-layout-derive = { version = "0.1", path = "../spirv_struct_layout_derive" }
+spirq = "0.2"

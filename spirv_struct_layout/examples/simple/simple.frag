@@ -11,5 +11,8 @@ layout(location = 0) out vec4 outColor;
 void main() {
     vec4 p = buf.model_view * buf.position;
     float d = dot(p.xyz, buf.light_dir);
+    if (d < 0.0) {
+      d = -d;
+    }
     outColor = vec4(vec3(d), 1.0);
 }

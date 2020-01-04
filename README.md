@@ -18,7 +18,7 @@ struct Uniforms {
 fn main() {
     let spirv = Vec::from(cast_slice(include_bytes!("simple.frag.spv")));
 
-    Uniforms::check("buf", spirv);
+    Uniforms::check_spirv_layout("buf", spirv);
 }
 ```
 

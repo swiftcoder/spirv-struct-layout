@@ -18,12 +18,13 @@ pub fn spirv_layout_derive(input: proc_macro::TokenStream) -> proc_macro::TokenS
         impl #impl_generics spirv_struct_layout::CheckSpirvStruct for #name
             #ty_generics #where_clause {
 
-            #[allow(unused_assignments)]
-            fn check(name: &str, spirv: Vec<u32>) {
+            fn check_spirv_layout(name: &str, spirv: Vec<u32>) {
                 let spv: spirq::SpirvBinary = spirv.into();
                 let entries = spv.reflect().unwrap();
 
-                let mut rust_offset = 0;
+                let buffer_desc = entries[0].resolve_desc(spirq::sym::Sym::new(name)).unwrap();
+
+                let mut _rust_offset = 0;
 
                 #body
             }
@@ -43,12 +44,12 @@ fn build_function_body(data: &Data) -> TokenStream {
                     quote_spanned! {
                         f.span() => {
                             {
-                                let symbol = name.to_owned() + "." + stringify!(#name);
+                                let symbol = stringify!(#name);
                                 let rust_size = std::mem::size_of::<#ty>();
 
-                                if let Some((offset, var_ty)) = entries[0].resolve_desc(spirq::sym::Sym::new(&symbol)) {
-                                    let spirv_offset = offset.unwrap();
-                                    let spirv_size = var_ty.nbyte().unwrap();
+                                if let Some(desc) = buffer_desc.desc_ty.resolve(spirq::sym::Sym::new(&symbol)) {
+                                    let spirv_offset = desc.offset;
+                                    let spirv_size = desc.ty.nbyte().unwrap();
 
                                     assert_eq!(
                                         spirv_size, rust_size,
@@ -56,13 +57,13 @@ fn build_function_body(data: &Data) -> TokenStream {
                                         symbol, spirv_size, rust_size
                                     );
                                     assert_eq!(
-                                        spirv_offset, rust_offset,
+                                        spirv_offset, _rust_offset,
                                         "field {} should have an offset of {} bytes, but was {} bytes",
-                                        symbol, spirv_offset, rust_offset
+                                        symbol, spirv_offset, _rust_offset
                                     );
                                 }
 
-                                rust_offset += rust_size;
+                                _rust_offset += rust_size;
                             }
                         }
                     }
