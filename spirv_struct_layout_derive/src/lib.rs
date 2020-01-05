@@ -3,7 +3,7 @@ extern crate proc_macro;
 use proc_macro2::TokenStream;
 use quote::{quote, quote_spanned};
 use syn::spanned::Spanned;
-use syn::{parse_macro_input, Data, DeriveInput, Fields};
+use syn::{parse_macro_input, Attribute, Data, DeriveInput, Fields};
 
 #[proc_macro_derive(SpirvLayout)]
 pub fn spirv_layout_derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
@@ -12,6 +12,7 @@ pub fn spirv_layout_derive(input: proc_macro::TokenStream) -> proc_macro::TokenS
     let name = input.ident;
     let (impl_generics, ty_generics, where_clause) = input.generics.split_for_impl();
 
+    let repr_check = ensure_repr(&input.attrs);
     let body = build_function_body(&input.data);
 
     let expanded = quote! {
@@ -19,6 +20,8 @@ pub fn spirv_layout_derive(input: proc_macro::TokenStream) -> proc_macro::TokenS
             #ty_generics #where_clause {
 
             fn check_spirv_layout(name: &str, spirv: Vec<u32>) {
+                #repr_check
+
                 let spv: spirq::SpirvBinary = spirv.into();
                 let entries = spv.reflect().unwrap();
 
@@ -32,6 +35,18 @@ pub fn spirv_layout_derive(input: proc_macro::TokenStream) -> proc_macro::TokenS
     };
 
     proc_macro::TokenStream::from(expanded)
+}
+
+fn ensure_repr(attrs: &Vec<Attribute>) -> TokenStream {
+    for attr in attrs {
+        if let Ok(meta) = attr.parse_meta() {
+            if meta.path().is_ident("repr") {
+                return quote! {};
+            }
+        }
+    }
+
+    quote! { compile_error!("structs exposed to SPIRV must have a declared repr"); }
 }
 
 fn build_function_body(data: &Data) -> TokenStream {

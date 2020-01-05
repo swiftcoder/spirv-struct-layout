@@ -1,6 +1,6 @@
 [package]
 name = "spirv-struct-layout"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Tristam MacDonald <tristam@trist.am>"]
 license = "Apache-2.0"
 description = "Check that the layout of a rust struct matches the layout of a given type in SPIRV"

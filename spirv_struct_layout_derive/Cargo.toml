@@ -1,6 +1,6 @@
 [package]
 name = "spirv-struct-layout-derive"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Tristam MacDonald <tristam@trist.am>"]
 license = "Apache-2.0"
 description = "This crate is just an implementation detail of the spirv-struct-layout crate"

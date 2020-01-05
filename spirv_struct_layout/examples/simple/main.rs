@@ -11,6 +11,7 @@ fn cast_slice(v: &[u8]) -> &[u32] {
 }
 
 #[allow(dead_code)]
+#[repr(C)]
 #[derive(SpirvLayout)]
 struct Uniforms {
     model_view: [f32; 16],

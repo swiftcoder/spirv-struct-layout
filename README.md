@@ -6,6 +6,7 @@ Usage example:
 ```
 use spirv_struct_layout::{CheckSpirvStruct, SpirvLayout};
 
+#[repr(C)]
 #[derive(SpirvLayout)]
 struct Uniforms {
     model_view: [f32; 16],
