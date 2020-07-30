@@ -64,7 +64,7 @@ fn build_function_body(data: &Data) -> TokenStream {
 
                                 if let Some(desc) = buffer_desc.desc_ty.resolve(spirq::sym::Sym::new(&symbol)) {
                                     let spirv_offset = desc.offset;
-                                    let spirv_size = desc.ty.nbyte().expect(format!("Rust struct field named \"{}\" does not have a basic data type (float, vec, mat, array, struct) as a SPIR-V counterpart").as_str());
+                                    let spirv_size = desc.ty.nbyte().expect(format!("Rust struct field named \"{}\" does not have a basic data type (float, vec, mat, array, struct) as a SPIR-V counterpart", &symbol).as_str());
 
                                     assert_eq!(
                                         spirv_size, rust_size,
