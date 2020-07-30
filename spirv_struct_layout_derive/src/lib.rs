@@ -25,7 +25,7 @@ pub fn spirv_layout_derive(input: proc_macro::TokenStream) -> proc_macro::TokenS
                 let spv: spirq::SpirvBinary = spirv.into();
                 let entries = spv.reflect().expect("Failed to parse SPIR-V");
 
-                let buffer_desc = entries[0].resolve_desc(spirq::sym::Sym::new(name)).expect(format!("Failed to find symbol with name \"{}\"", name));
+                let buffer_desc = entries[0].resolve_desc(spirq::sym::Sym::new(name)).expect(format!("Failed to find symbol with name \"{}\"", name).as_str());
 
                 let mut _rust_offset = 0;
 
@@ -64,7 +64,7 @@ fn build_function_body(data: &Data) -> TokenStream {
 
                                 if let Some(desc) = buffer_desc.desc_ty.resolve(spirq::sym::Sym::new(&symbol)) {
                                     let spirv_offset = desc.offset;
-                                    let spirv_size = desc.ty.nbyte().expect(format!("Rust struct field named \"{}\" does not have a basic data type (float, vec, mat, array, struct) as a SPIR-V counterpart"));
+                                    let spirv_size = desc.ty.nbyte().expect(format!("Rust struct field named \"{}\" does not have a basic data type (float, vec, mat, array, struct) as a SPIR-V counterpart").as_str());
 
                                     assert_eq!(
                                         spirv_size, rust_size,
