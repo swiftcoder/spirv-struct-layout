@@ -12,4 +12,4 @@ readme = "../README.md"
 
 [dependencies]
 spirv-struct-layout-derive = { version = "0.1", path = "../spirv_struct_layout_derive" }
-spirq = "0.2"
+spirq = "0.4"
